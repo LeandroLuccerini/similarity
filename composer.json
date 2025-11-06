@@ -1,0 +1,27 @@
+{
+  "name": "szopen/similarity",
+  "description": "A similarity algorithm for user data matching",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Szopen\\Similarity\\": "src/",
+      "Szopen\\Similarity\\Tests\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Leandro Luccerini"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=8.2",
+    "opis/json-schema": "^2.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^12.3",
+    "phpstan/phpstan": "^2.1",
+    "friendsofphp/php-cs-fixer": "^3.88"
+  }
+}
