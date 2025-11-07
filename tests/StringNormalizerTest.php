@@ -12,22 +12,22 @@ class StringNormalizerTest extends TestCase
     {
         return [
             // semplice minuscolo
-            ['ciao mondo', 'ciao mondo'],
+            ['ciao mondo', 'ciaomondo'],
 
             // maiuscole → minuscole
-            ['CIAO MONDO', 'ciao mondo'],
+            ['CIAO MONDO', 'ciaomondo'],
 
             // spazi da tagliare
-            ['   ciao mondo   ', 'ciao mondo'],
+            ['   ciao mondo   ', 'ciaomondo'],
 
             // spazi multipli ridotti a uno
-            ['ciao    mondo   bello', 'ciao mondo bello'],
+            ['ciao    mondo   bello', 'ciaomondobello'],
 
             // punteggiatura rimossa
-            ['ciao, mondo! bello?', 'ciao mondo bello'],
+            ['ciao, mondo! bello?', 'ciaomondobello'],
 
             // accenti e translitterazione
-            ['città naïve élève über', 'citta naive eleve uber'],
+            ['città naïve élève über', 'cittanaiveeleveuber'],
 
             // unicode combinato (é come e + accent combining)
             ["e\u{0301}cole", 'ecole'],
@@ -54,10 +54,10 @@ class StringNormalizerTest extends TestCase
             ['!@#$%^&*()', null],
 
             // caratteri non latini (cinese) – translitterati o rimossi
-            ['你好世界', 'ni hao shi jie'], // potresti ottenere 'nihaoshijie' a seconda di ICU locale
+            ['你好世界', 'nihaoshijie'],
 
             // emoji e simboli non ASCII
-            ['ciao 🌍!', 'ciao'], // rimuove tutto tranne caratteri alfanumerici e spazi
+            ['ciao 🌍!', 'ciao'],
 
             // caratteri accentati misti con numeri
             ['Café123', 'cafe123'],

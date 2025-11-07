@@ -31,7 +31,7 @@ readonly class StringNormalizer
 
     private function removeExtraSpaces(string $string): string
     {
-        return trim(preg_replace('/\s+/', ' ', $string));
+        return trim(preg_replace('/\s+/', '', $string));
     }
 
     private function removeNonAlphanumericChars(string $string): string
