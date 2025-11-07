@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
+namespace Tests\Szopen\Similarity\Normalizer;
+
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Szopen\Similarity\StringNormalizer;
+use Szopen\Similarity\Normalizer\BuiltInClassChecker;
+use Szopen\Similarity\Normalizer\StringNormalizer;
+use Tests\Szopen\Similarity\DesiredValuedClassCheckerStub;
 
 class StringNormalizerTest extends TestCase
 {
@@ -50,12 +54,6 @@ class StringNormalizerTest extends TestCase
             // numeri e lettere mescolati
             ['ABC123xyz', 'abc123xyz'],
 
-            // solo simboli → null
-            ['!@#$%^&*()', null],
-
-            // caratteri non latini (cinese) – translitterati o rimossi
-            ['你好世界', 'nihaoshijie'],
-
             // emoji e simboli non ASCII
             ['ciao 🌍!', 'ciao'],
 
@@ -67,10 +65,29 @@ class StringNormalizerTest extends TestCase
         ];
     }
 
+    public static function chineseDataProvider(): array
+    {
+        return [
+            // solo simboli → null
+            ['!@#$%^&*()', null],
+
+            // caratteri non latini (cinese) – translitterati o rimossi
+            ['你好世界', 'nihaoshijie'],
+        ];
+    }
+
     #[DataProvider("normalizeDataProvider")]
+    #[DataProvider("chineseDataProvider")]
     public function testNormalizer(string $input, ?string $output): void
     {
-        $n = new StringNormalizer();
+        $n = new StringNormalizer(new BuiltInClassChecker());
+        $this->assertEquals($output, $n->normalize($input));
+    }
+
+    #[DataProvider("normalizeDataProvider")]
+    public function testNormalizerWithoutIntl(string $input, ?string $output): void
+    {
+        $n = new StringNormalizer(new DesiredValuedClassCheckerStub(false));
         $this->assertEquals($output, $n->normalize($input));
     }
 }

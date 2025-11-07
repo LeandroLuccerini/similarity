@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Szopen\Similarity;
+namespace Szopen\Similarity\Normalizer;
 
 use Normalizer;
 use Transliterator;
 
 readonly class StringNormalizer
 {
+    public function __construct(private ClassChecker $classChecker)
+    {
+    }
+
     public function normalize(string $string): ?string
     {
         $string = trim($string);
@@ -43,7 +47,7 @@ readonly class StringNormalizer
     {
         // Transliterate to ASCII to avoid multibyte issues with levenshtein
         // Prefer Transliterator if available
-        if (class_exists('Transliterator')) {
+        if ($this->classChecker->exists('Transliterator')) {
             $trans = Transliterator::create('Any-Latin; Latin-ASCII;');
             if ($trans) {
                 return $trans->transliterate($string) ?: $string;
@@ -61,7 +65,7 @@ readonly class StringNormalizer
 
     private function tryNfcNormalizationIfAvailable(string $s): string
     {
-        if (!class_exists('Normalizer')) {
+        if ($this->classChecker->exists('Normalizer')) {
             return $s;
         }
         // Unicode normalization (NFC)
