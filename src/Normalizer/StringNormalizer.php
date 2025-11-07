@@ -20,7 +20,7 @@ readonly class StringNormalizer
             return null;
         }
 
-        $string = $this->removeExtraSpaces(
+        $string = $this->removeAllSpaces(
             $this->removeNonAlphanumericChars(
                 $this->transliterate(
                     $this->tryNfcNormalizationIfAvailable(
@@ -33,14 +33,25 @@ readonly class StringNormalizer
         return $string === '' ? null : $string;
     }
 
-    private function removeExtraSpaces(string $string): string
+    private function removeAllSpaces(string $string): string
     {
-        return trim(preg_replace('/\s+/', '', $string));
+        $noSpaces = preg_replace(
+            '/\s+/',
+            '',
+            $string
+        );
+        return trim($noSpaces !== null ? $noSpaces : $string);
     }
 
     private function removeNonAlphanumericChars(string $string): string
     {
-        return preg_replace('/[^A-Za-z0-9 ]+/', '', $string);
+        $alphanumeric = preg_replace(
+            '/[^A-Za-z0-9 ]+/',
+            '',
+            $string
+        );
+
+        return $alphanumeric !== null ? $alphanumeric : $string;
     }
 
     private function transliterate(string $string): string
@@ -69,6 +80,7 @@ readonly class StringNormalizer
             return $s;
         }
         // Unicode normalization (NFC)
+        // @phpstan-ignore return.type
         return Normalizer::normalize($s, Normalizer::FORM_C) ?: $s;
     }
 

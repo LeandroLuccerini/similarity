@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Szopen\Similarity;
+namespace Tests\Szopen\Similarity\Normalizer;
 
 use Szopen\Similarity\Normalizer\ClassChecker;
 

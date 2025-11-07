@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Szopen\Similarity\Normalizer\BuiltInClassChecker;
 use Szopen\Similarity\Normalizer\StringNormalizer;
-use Tests\Szopen\Similarity\DesiredValuedClassCheckerStub;
 
 class StringNormalizerTest extends TestCase
 {
