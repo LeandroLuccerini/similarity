@@ -6,7 +6,7 @@
   "autoload": {
     "psr-4": {
       "Szopen\\Similarity\\": "src/",
-      "Szopen\\Similarity\\Tests\\": "tests/"
+      "Tests\\Szopen\\Similarity\\": "tests/"
     }
   },
   "authors": [
