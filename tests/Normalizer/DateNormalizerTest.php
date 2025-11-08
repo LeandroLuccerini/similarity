@@ -36,9 +36,28 @@ class DateNormalizerTest extends TestCase
     #[DataProvider('normalizeProvider')]
     public function testNormalize(string $input, ?string $expected): void
     {
-        $normalizer = new DateNormalizer();
-        $result = $normalizer->normalize($input);
+        $normalizer = new DateNormalizer(50);
+        $this->assertSame(
+            $expected,
+            $normalizer->normalize($input),
+            "Failed normalizing '$input'"
+        );
+    }
 
-        $this->assertSame($expected, $result, "Failed normalizing '$input'");
+    public function testNormalizeWithDifferentThresholds(): void
+    {
+        $normalizer = new DateNormalizer(50);
+        $this->assertSame(
+            "2001-01-01",
+            $normalizer->normalize("01/01/01"),
+            "Wrong guess with threshold '50' for '01/01/01'"
+        );
+
+        $normalizer = new DateNormalizer(50);
+        $this->assertSame(
+            "1950-01-01",
+            $normalizer->normalize("01/01/50"),
+            "Wrong guess with threshold '50' for '01/01/50'"
+        );
     }
 }

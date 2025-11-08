@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace Szopen\Similarity\Normalizer;
 
-final readonly class DateNormalizer implements Normalizer
+final class DateNormalizer implements Normalizer
 {
     private const YEAR_MONTH_DAY_TEMPLATE = '/^\d{4}[-\/.]\d{1,2}[-\/.]\d{1,2}$/';
     private const DAY_MONTH_YEAR_TEMPLATE = '/^\d{1,2}[-\/.]\d{1,2}[-\/.]\d{2,4}$/';
     private const COMMON_DATE_SEPARATORS = '/[\/\-.]/';
+
+    public function __construct(private ?int $twoCharYearThreshold = null)
+    {
+        if (null === $this->twoCharYearThreshold) {
+            $this->twoCharYearThreshold = intval(date('y'));
+        }
+    }
 
     public function normalize(string $string): ?string
     {
@@ -123,7 +130,7 @@ final readonly class DateNormalizer implements Normalizer
     private function fixTwoCharsYear(string $year): string
     {
         if ($year && strlen($year) === 2) {
-            $year = intval($year) >= 50 ? "19$year" : "20$year";
+            $year = intval($year) >= $this->twoCharYearThreshold ? "19$year" : "20$year";
         }
 
         return $year;
