@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Szopen\Similarity\Normalizer;
 
-use Normalizer;
+use Normalizer as IntlNormalizer;
 use Transliterator;
 
-readonly class StringNormalizer
+readonly final class StringNormalizer implements Normalizer
 {
     public function __construct(private ClassChecker $classChecker)
     {
@@ -81,7 +81,7 @@ readonly class StringNormalizer
         }
         // Unicode normalization (NFC)
         // @phpstan-ignore return.type
-        return Normalizer::normalize($s, Normalizer::FORM_C) ?: $s;
+        return IntlNormalizer::normalize($s, IntlNormalizer::FORM_C) ?: $s;
     }
 
     private function multibyteLowercase(string $s): string
