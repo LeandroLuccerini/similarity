@@ -22,7 +22,7 @@ final readonly class DateNormalizer implements Normalizer
             return null;
         }
 
-        [$day, $month, $year] = $this->guessDayMonthAndYear($date, $parts);
+        [$year, $month, $day] = $this->guessYearMonthAndDay($date, $parts);
         return sprintf(
             "%s-%s-%s",
             $this->fixTwoCharsYear($year),
@@ -31,9 +31,7 @@ final readonly class DateNormalizer implements Normalizer
         );
     }
 
-
     /**
-     * @param string $date
      * @return list<string>|null
      */
     private function parseAndGetDateParts(string $date): ?array
@@ -76,37 +74,50 @@ final readonly class DateNormalizer implements Normalizer
      * @param list<string> $parts
      * @return list<string>
      */
-    private function guessDayMonthAndYear(string $date, array $parts): array
+    private function guessYearMonthAndDay(string $date, array $parts): array
     {
-        if (
-            preg_match(self::YEAR_MONTH_DAY_TEMPLATE, $date)
-        ) {
-            if (intval($parts[1]) <= 12) {
-                [$year, $month, $day] = $parts;
-            } else {
-                [$year, $day, $month] = $parts;
-            }
-        } elseif (
-            preg_match(self::DAY_MONTH_YEAR_TEMPLATE, $date)
-        ) {
-            if (intval($parts[1]) <= 12) {
-                [$day, $month, $year] = $parts;
-            } else {
-                [$month, $day, $year] = $parts;
-            }
+        if (preg_match(self::YEAR_MONTH_DAY_TEMPLATE, $date)) {
+            return $this->getPartsFromYearMonthDayTemplate($parts);
+        } elseif (preg_match(self::DAY_MONTH_YEAR_TEMPLATE, $date)) {
+            return $this->getPartsFromDayMonthTemplate($parts);
         } else {
-            [$a, $b, $c] = $parts;
+            [$a, , $c] = $parts;
             if (strlen($a) === 4) {
-                [$year, $month, $day] = [$a, $b, $c];
+                return $this->getPartsFromYearMonthDayTemplate($parts);
             } elseif (strlen($c) === 4) {
-                [$day, $month, $year] = [$a, $b, $c];
+                return $this->getPartsFromDayMonthTemplate($parts);
             } else {
                 // heuristic fallback
-                [$day, $month, $year] = [$a, $b, $c];
+                return array_reverse($parts); // [year, month, day]
             }
         }
+    }
 
-        return [$day, $month, $year];
+    private function getPartsFromYearMonthDayTemplate(array $parts): array
+    {
+        if ($this->couldBeAMonthValue(intval($parts[1]))) {
+            [$year, $month, $day] = $parts;
+        } else {
+            [$year, $day, $month] = $parts;
+        }
+
+        return [$year, $month, $day];
+    }
+
+    private function couldBeAMonthValue(int $month): bool
+    {
+        return $month <= 12;
+    }
+
+    private function getPartsFromDayMonthTemplate(array $parts): array
+    {
+        if ($this->couldBeAMonthValue(intval($parts[1]))) {
+            [$day, $month, $year] = $parts;
+        } else {
+            [$month, $day, $year] = $parts;
+        }
+
+        return [$year, $month, $day];
     }
 
     private function fixTwoCharsYear(string $year): string
