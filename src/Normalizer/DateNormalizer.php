@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Szopen\Similarity\Normalizer;
 
-readonly final class DateNormalizer implements Normalizer
+final readonly class DateNormalizer implements Normalizer
 {
-
     private const YEAR_MONTH_DAY_TEMPLATE = '/^\d{4}[-\/.]\d{1,2}[-\/.]\d{1,2}$/';
     private const DAY_MONTH_YEAR_TEMPLATE = '/^\d{1,2}[-\/.]\d{1,2}[-\/.]\d{2,4}$/';
 
@@ -63,7 +62,7 @@ readonly final class DateNormalizer implements Normalizer
         }
 
         /** @var list<string> $parts */
-        $parts = array_filter($parts, fn($p) => $p !== '');
+        $parts = array_filter($parts, fn ($p) => $p !== '');
         if (count($parts) !== 3) {
             return null;
         }

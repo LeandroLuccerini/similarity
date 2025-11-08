@@ -7,7 +7,7 @@ namespace Szopen\Similarity\Normalizer;
 use Normalizer as IntlNormalizer;
 use Transliterator;
 
-readonly final class StringNormalizer implements Normalizer
+final readonly class StringNormalizer implements Normalizer
 {
     public function __construct(private ClassChecker $classChecker)
     {
