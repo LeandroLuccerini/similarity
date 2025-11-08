@@ -8,6 +8,7 @@ final readonly class DateNormalizer implements Normalizer
 {
     private const YEAR_MONTH_DAY_TEMPLATE = '/^\d{4}[-\/.]\d{1,2}[-\/.]\d{1,2}$/';
     private const DAY_MONTH_YEAR_TEMPLATE = '/^\d{1,2}[-\/.]\d{1,2}[-\/.]\d{2,4}$/';
+    private const COMMON_DATE_SEPARATORS = '/[\/\-.]/';
 
     public function normalize(string $string): ?string
     {
@@ -38,7 +39,7 @@ final readonly class DateNormalizer implements Normalizer
     private function parseAndGetDateParts(string $date): ?array
     {
         $date = $this->removeNonNumericCharsAndNotAllowedSeparators($date);
-        if (!$date) {
+        if (null === $date) {
             return null;
         }
 
@@ -56,13 +57,13 @@ final readonly class DateNormalizer implements Normalizer
     private function getThreeDateParts(string $date): ?array
     {
         /** @var list<string>|false $parts */
-        $parts = preg_split('/[\/\-.]/', $date);
+        $parts = preg_split(self::COMMON_DATE_SEPARATORS, $date);
         if (!is_array($parts)) {
             return null;
         }
 
         /** @var list<string> $parts */
-        $parts = array_filter($parts, fn ($p) => $p !== '');
+        $parts = array_filter($parts, fn($p) => $p !== '');
         if (count($parts) !== 3) {
             return null;
         }
@@ -80,11 +81,19 @@ final readonly class DateNormalizer implements Normalizer
         if (
             preg_match(self::YEAR_MONTH_DAY_TEMPLATE, $date)
         ) {
-            [$year, $month, $day] = $parts;
+            if (intval($parts[1]) <= 12) {
+                [$year, $month, $day] = $parts;
+            } else {
+                [$year, $day, $month] = $parts;
+            }
         } elseif (
             preg_match(self::DAY_MONTH_YEAR_TEMPLATE, $date)
         ) {
-            [$day, $month, $year] = $parts;
+            if (intval($parts[1]) <= 12) {
+                [$day, $month, $year] = $parts;
+            } else {
+                [$month, $day, $year] = $parts;
+            }
         } else {
             [$a, $b, $c] = $parts;
             if (strlen($a) === 4) {
