@@ -7,7 +7,7 @@ namespace Szopen\Similarity;
 use InvalidArgumentException;
 use Szopen\Similarity\Normalizer\StringNormalizer;
 
-final readonly class FuzzySimilarity implements Similarity
+final readonly class StringFuzzySimilarity implements Similarity
 {
     public function __construct(private StringNormalizer $stringNormalizer)
     {
@@ -59,9 +59,9 @@ final readonly class FuzzySimilarity implements Similarity
     private function stringsAreVeryShort(string $normalizedA, string $normalizedB): bool
     {
         return max(
-            mb_strlen($normalizedA, 'UTF-8'),
-            mb_strlen($normalizedB, 'UTF-8')
-        ) <= 2;
+                mb_strlen($normalizedA, 'UTF-8'),
+                mb_strlen($normalizedB, 'UTF-8')
+            ) <= 2;
     }
 
     private function levenshteinSimilarity(string $normalizedA, string $normalizedB): float
