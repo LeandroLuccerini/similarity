@@ -6,14 +6,14 @@ namespace Szopen\Similarity\Normalizer;
 
 final class DateNormalizer implements Normalizer
 {
-    private const YEAR_MONTH_DAY_TEMPLATE = '/^\d{4}[-\/.]\d{1,2}[-\/.]\d{1,2}$/';
-    private const DAY_MONTH_YEAR_TEMPLATE = '/^\d{1,2}[-\/.]\d{1,2}[-\/.]\d{2,4}$/';
+    private const YYYY_MM_DD_TEMPLATE = '/^\d{4}[-\/.]\d{1,2}[-\/.]\d{1,2}$/';
+    private const DD_MM_YYYY_TEMPLATE = '/^\d{1,2}[-\/.]\d{1,2}[-\/.]\d{2,4}$/';
     private const COMMON_DATE_SEPARATORS = '/[\/\-.]/';
 
-    public function __construct(private ?int $twoCharYearThreshold = null)
+    public function __construct(private ?int $twoDigitsYearThreshold = null)
     {
-        if (null === $this->twoCharYearThreshold) {
-            $this->twoCharYearThreshold = intval(date('y'));
+        if (null === $this->twoDigitsYearThreshold) {
+            $this->twoDigitsYearThreshold = intval(date('y'));
         }
     }
 
@@ -32,7 +32,7 @@ final class DateNormalizer implements Normalizer
         [$year, $month, $day] = $this->guessYearMonthAndDay($date, $parts);
         return sprintf(
             "%s-%s-%s",
-            $this->fixTwoCharsYear($year),
+            $this->fixTwoDigitsYear($year),
             str_pad($month, 2, '0', STR_PAD_LEFT),
             str_pad($day, 2, '0', STR_PAD_LEFT)
         );
@@ -83,16 +83,16 @@ final class DateNormalizer implements Normalizer
      */
     private function guessYearMonthAndDay(string $date, array $parts): array
     {
-        if (preg_match(self::YEAR_MONTH_DAY_TEMPLATE, $date)) {
-            return $this->getPartsFromYearMonthDayTemplate($parts);
-        } elseif (preg_match(self::DAY_MONTH_YEAR_TEMPLATE, $date)) {
-            return $this->getPartsFromDayMonthTemplate($parts);
+        if (preg_match(self::YYYY_MM_DD_TEMPLATE, $date)) {
+            return $this->getPartsFromYYYYMMDDTemplate($parts);
+        } elseif (preg_match(self::DD_MM_YYYY_TEMPLATE, $date)) {
+            return $this->getPartsFromDDMMYYYYTemplate($parts);
         } else {
             [$a, , $c] = $parts;
             if (strlen($a) === 4) {
-                return $this->getPartsFromYearMonthDayTemplate($parts);
+                return $this->getPartsFromYYYYMMDDTemplate($parts);
             } elseif (strlen($c) === 4) {
-                return $this->getPartsFromDayMonthTemplate($parts);
+                return $this->getPartsFromDDMMYYYYTemplate($parts);
             } else {
                 // heuristic fallback
                 return array_reverse($parts); // [year, month, day]
@@ -100,7 +100,7 @@ final class DateNormalizer implements Normalizer
         }
     }
 
-    private function getPartsFromYearMonthDayTemplate(array $parts): array
+    private function getPartsFromYYYYMMDDTemplate(array $parts): array
     {
         if ($this->couldBeAMonthValue(intval($parts[1]))) {
             [$year, $month, $day] = $parts;
@@ -116,7 +116,7 @@ final class DateNormalizer implements Normalizer
         return $month <= 12;
     }
 
-    private function getPartsFromDayMonthTemplate(array $parts): array
+    private function getPartsFromDDMMYYYYTemplate(array $parts): array
     {
         if ($this->couldBeAMonthValue(intval($parts[1]))) {
             [$day, $month, $year] = $parts;
@@ -127,10 +127,10 @@ final class DateNormalizer implements Normalizer
         return [$year, $month, $day];
     }
 
-    private function fixTwoCharsYear(string $year): string
+    private function fixTwoDigitsYear(string $year): string
     {
         if ($year && strlen($year) === 2) {
-            $year = intval($year) >= $this->twoCharYearThreshold ? "19$year" : "20$year";
+            $year = intval($year) >= $this->twoDigitsYearThreshold ? "19$year" : "20$year";
         }
 
         return $year;
