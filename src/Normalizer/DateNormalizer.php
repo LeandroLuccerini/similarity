@@ -100,6 +100,10 @@ final class DateNormalizer implements Normalizer
         }
     }
 
+    /**
+     * @param list<string> $parts
+     * @return list<string>
+     */
     private function getPartsFromYYYYMMDDTemplate(array $parts): array
     {
         if ($this->couldBeAMonthValue(intval($parts[1]))) {
@@ -116,6 +120,10 @@ final class DateNormalizer implements Normalizer
         return $month <= 12;
     }
 
+    /**
+     * @param list<string> $parts
+     * @return list<string>
+     */
     private function getPartsFromDDMMYYYYTemplate(array $parts): array
     {
         if ($this->couldBeAMonthValue(intval($parts[1]))) {
