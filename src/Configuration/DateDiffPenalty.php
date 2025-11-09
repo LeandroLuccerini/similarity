@@ -24,7 +24,7 @@ readonly class DateDiffPenalty
 
         for ($i = 1; $i <= $this->maxDatePartDiffAccepted; $i++) {
             if ($diff === $i) {
-                return $weight * $this->diffPenalty ^ $i;
+                return $weight * pow($this->diffPenalty, $i);
             }
         }
 
