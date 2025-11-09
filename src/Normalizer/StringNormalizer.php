@@ -9,10 +9,6 @@ use Transliterator;
 
 final readonly class StringNormalizer implements Normalizer
 {
-    public function __construct(private ClassChecker $classChecker)
-    {
-    }
-
     public function normalize(string $string): ?string
     {
         $string = trim($string);
@@ -58,7 +54,7 @@ final readonly class StringNormalizer implements Normalizer
     {
         // Transliterate to ASCII to avoid multibyte issues with levenshtein
         // Prefer Transliterator if available
-        if ($this->classChecker->exists('Transliterator')) {
+        if ($this->classExists('Transliterator')) {
             $trans = Transliterator::create('Any-Latin; Latin-ASCII;');
             if ($trans) {
                 return $trans->transliterate($string) ?: $string;
@@ -74,9 +70,14 @@ final readonly class StringNormalizer implements Normalizer
         return $string;
     }
 
+    private function classExists(string $class): bool
+    {
+        return class_exists($class);
+    }
+
     private function tryNfcNormalizationIfAvailable(string $s): string
     {
-        if ($this->classChecker->exists('Normalizer')) {
+        if ($this->classExists('Normalizer')) {
             return $s;
         }
         // Unicode normalization (NFC)

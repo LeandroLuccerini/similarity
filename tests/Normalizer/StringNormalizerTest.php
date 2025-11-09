@@ -128,7 +128,7 @@ class StringNormalizerTest extends TestCase
     #[DataProvider("chineseDataProvider")]
     public function testNormalizer(string $input, ?string $output): void
     {
-        $n = new StringNormalizer(new BuiltInClassChecker());
+        $n = new StringNormalizer();
         $this->assertEquals($output, $n->normalize($input));
     }
 
@@ -137,7 +137,7 @@ class StringNormalizerTest extends TestCase
     #[DataProvider("frenchDataProvider")]
     public function testNormalizerWithoutIntl(string $input, ?string $output): void
     {
-        $n = new StringNormalizer(new DesiredValuedClassCheckerStub(false));
+        $n = new StringNormalizer();
         $this->assertEquals($output, $n->normalize($input));
     }
 }

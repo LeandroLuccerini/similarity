@@ -8,7 +8,6 @@ use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Szopen\Similarity\FuzzySimilarity;
-use Szopen\Similarity\Normalizer\BuiltInClassChecker;
 use Szopen\Similarity\Normalizer\StringNormalizer;
 
 
@@ -202,9 +201,7 @@ class FuzzySimilarityTest extends TestCase
     {
         parent::setUp();
         $this->fuzzy = new FuzzySimilarity(
-            new StringNormalizer(
-                new BuiltInClassChecker()
-            )
+            new StringNormalizer()
         );
     }
 }
