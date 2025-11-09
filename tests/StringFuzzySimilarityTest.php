@@ -7,14 +7,13 @@ namespace Tests\Szopen\Similarity;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Szopen\Similarity\FuzzySimilarity;
 use Szopen\Similarity\Normalizer\StringNormalizer;
 use Szopen\Similarity\Normalizer\Transliterator\TransliteratorFactory;
+use Szopen\Similarity\StringFuzzySimilarity;
 
-
-class FuzzySimilarityTest extends TestCase
+class StringFuzzySimilarityTest extends TestCase
 {
-    private FuzzySimilarity $fuzzy;
+    private StringFuzzySimilarity $fuzzy;
 
     public static function similarityDataProvider(): array
     {
@@ -201,7 +200,7 @@ class FuzzySimilarityTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->fuzzy = new FuzzySimilarity(
+        $this->fuzzy = new StringFuzzySimilarity(
             new StringNormalizer(
                 new TransliteratorFactory()
             )
