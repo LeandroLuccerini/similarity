@@ -7,7 +7,7 @@ namespace Szopen\Similarity;
 use InvalidArgumentException;
 use Szopen\Similarity\Normalizer\StringNormalizer;
 
-final readonly class FuzzySimilarity implements Similarity
+final readonly class StringFuzzySimilarity implements Similarity
 {
     public function __construct(private StringNormalizer $stringNormalizer)
     {
