@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Szopen\Similarity\Normalizer\StringNormalizer;
-use Szopen\Similarity\Normalizer\TransliteratorFactory;
+use Szopen\Similarity\Normalizer\Transliterator\TransliteratorFactory;
 
 #[Group("normalizer")]
 class StringNormalizerTest extends TestCase

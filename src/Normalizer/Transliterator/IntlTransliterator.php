@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Szopen\Similarity\Normalizer;
+namespace Szopen\Similarity\Normalizer\Transliterator;
 
 use Transliterator as BaseIntlTransliterator;
 

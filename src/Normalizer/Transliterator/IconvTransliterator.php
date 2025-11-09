@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Szopen\Similarity\Normalizer;
+namespace Szopen\Similarity\Normalizer\Transliterator;
 
-class IconvTransliterator implements Transliterator
+final readonly class IconvTransliterator implements Transliterator
 {
     public function transliterate(string $string): string
     {

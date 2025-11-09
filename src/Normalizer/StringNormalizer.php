@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Szopen\Similarity\Normalizer;
 
 use Normalizer as IntlNormalizer;
+use Szopen\Similarity\Normalizer\Transliterator\TransliteratorFactory;
 
 final readonly class StringNormalizer implements Normalizer
 {
