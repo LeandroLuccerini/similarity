@@ -7,7 +7,6 @@ namespace Tests\Szopen\Similarity\Normalizer;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
-use Szopen\Similarity\Normalizer\BuiltInClassChecker;
 use Szopen\Similarity\Normalizer\StringNormalizer;
 
 #[Group("normalizer")]
