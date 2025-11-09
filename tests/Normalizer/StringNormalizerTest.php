@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Szopen\Similarity\Normalizer\StringNormalizer;
+use Szopen\Similarity\Normalizer\TransliteratorFactory;
 
 #[Group("normalizer")]
 class StringNormalizerTest extends TestCase
@@ -127,7 +128,9 @@ class StringNormalizerTest extends TestCase
     #[DataProvider("chineseDataProvider")]
     public function testNormalizer(string $input, ?string $output): void
     {
-        $n = new StringNormalizer();
+        $n = new StringNormalizer(
+            new TransliteratorFactory()
+        );
         $this->assertEquals($output, $n->normalize($input));
     }
 
@@ -136,7 +139,9 @@ class StringNormalizerTest extends TestCase
     #[DataProvider("frenchDataProvider")]
     public function testNormalizerWithoutIntl(string $input, ?string $output): void
     {
-        $n = new StringNormalizer();
+        $n = new StringNormalizer(
+            new TransliteratorFactory()
+        );
         $this->assertEquals($output, $n->normalize($input));
     }
 }

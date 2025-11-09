@@ -9,6 +9,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Szopen\Similarity\FuzzySimilarity;
 use Szopen\Similarity\Normalizer\StringNormalizer;
+use Szopen\Similarity\Normalizer\TransliteratorFactory;
 
 
 class FuzzySimilarityTest extends TestCase
@@ -201,7 +202,9 @@ class FuzzySimilarityTest extends TestCase
     {
         parent::setUp();
         $this->fuzzy = new FuzzySimilarity(
-            new StringNormalizer()
+            new StringNormalizer(
+                new TransliteratorFactory()
+            )
         );
     }
 }

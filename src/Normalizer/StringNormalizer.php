@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Szopen\Similarity\Normalizer;
 
 use Normalizer as IntlNormalizer;
-use Transliterator;
 
 final readonly class StringNormalizer implements Normalizer
 {
+    public function __construct(private TransliteratorFactory $transliteratorFactory)
+    {
+    }
+
     public function normalize(string $string): ?string
     {
         $string = trim($string);
@@ -16,9 +19,10 @@ final readonly class StringNormalizer implements Normalizer
             return null;
         }
 
+        $transliterator = $this->transliteratorFactory->create();
         $string = $this->removeAllSpaces(
             $this->removeNonAlphanumericChars(
-                $this->transliterate(
+                $transliterator->transliterate(
                     $this->tryNfcNormalizationIfAvailable(
                         $this->multibyteLowercase($string)
                     )
@@ -50,31 +54,6 @@ final readonly class StringNormalizer implements Normalizer
         return $alphanumeric !== null ? $alphanumeric : $string;
     }
 
-    private function transliterate(string $string): string
-    {
-        // Transliterate to ASCII to avoid multibyte issues with levenshtein
-        // Prefer Transliterator if available
-        if ($this->classExists('Transliterator')) {
-            $trans = Transliterator::create('Any-Latin; Latin-ASCII;');
-            if ($trans) {
-                return $trans->transliterate($string) ?: $string;
-            }
-        } else {
-            return iconv(
-                'UTF-8',
-                'ASCII//TRANSLIT//IGNORE',
-                $string
-            ) ?: $string;
-        }
-
-        return $string;
-    }
-
-    private function classExists(string $class): bool
-    {
-        return class_exists($class);
-    }
-
     private function tryNfcNormalizationIfAvailable(string $s): string
     {
         if ($this->classExists('Normalizer')) {
@@ -83,6 +62,11 @@ final readonly class StringNormalizer implements Normalizer
         // Unicode normalization (NFC)
         // @phpstan-ignore return.type
         return IntlNormalizer::normalize($s, IntlNormalizer::FORM_C) ?: $s;
+    }
+
+    private function classExists(string $class): bool
+    {
+        return class_exists($class);
     }
 
     private function multibyteLowercase(string $s): string
