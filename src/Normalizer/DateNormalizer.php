@@ -68,7 +68,7 @@ final class DateNormalizer implements Normalizer
         }
 
         /** @var list<string> $parts */
-        $parts = array_filter($parts, fn($p) => $p !== '');
+        $parts = array_filter($parts, fn ($p) => $p !== '');
         if (count($parts) !== 3) {
             return null;
         }
