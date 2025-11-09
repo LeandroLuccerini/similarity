@@ -6,9 +6,9 @@ namespace Szopen\Similarity\Normalizer\Transliterator;
 
 use Transliterator as BaseIntlTransliterator;
 
-final readonly class TransliteratorFactory
+readonly class TransliteratorFactory
 {
-    public static function create(): Transliterator
+    public function create(): Transliterator
     {
         if (class_exists(BaseIntlTransliterator::class)) {
             return new IntlTransliterator();
