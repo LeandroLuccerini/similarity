@@ -9,6 +9,7 @@ readonly class DateDiffPenalty
     public function __construct(
         private int $maxDatePartDiffAccepted = 5,
         private float $diffPenalty = 0.7,
+        private int $precision = 3,
     ) {
     }
 
@@ -24,7 +25,10 @@ readonly class DateDiffPenalty
 
         for ($i = 1; $i <= $this->maxDatePartDiffAccepted; $i++) {
             if ($diff === $i) {
-                return $weight * pow($this->diffPenalty, $i);
+                return round(
+                    $weight * pow($this->diffPenalty, $i),
+                    $this->precision
+                );
             }
         }
 
