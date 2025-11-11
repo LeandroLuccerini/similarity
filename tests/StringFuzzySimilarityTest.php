@@ -6,11 +6,13 @@ namespace Tests\Szopen\Similarity;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Szopen\Similarity\Normalizer\StringNormalizer;
 use Szopen\Similarity\Normalizer\Transliterator\TransliteratorFactory;
 use Szopen\Similarity\StringFuzzySimilarity;
 
+#[Group("similarity")]
 class StringFuzzySimilarityTest extends TestCase
 {
     private StringFuzzySimilarity $fuzzy;
