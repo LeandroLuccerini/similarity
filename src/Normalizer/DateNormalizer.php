@@ -7,7 +7,7 @@ namespace Szopen\Similarity\Normalizer;
 final class DateNormalizer implements Normalizer
 {
     private const YYYY_MM_DD_TEMPLATE = '/^\d{4}[-\/.]\d{1,2}[-\/.]\d{1,2}$/';
-    private const DD_MM_YYYY_TEMPLATE = '/^\d{1,2}[-\/.]\d{1,2}[-\/.]\d{2,4}$/';
+    private const DD_MM_YYYY_TEMPLATE = '/^\d{1,2}[-\/.]\d{1,2}[-\/.]\d{4}$/';
     private const COMMON_DATE_SEPARATORS = '/[\/\-.]/';
 
     public function __construct(private ?int $twoDigitsYearThreshold = null)
@@ -89,9 +89,9 @@ final class DateNormalizer implements Normalizer
             return $this->getPartsFromDDMMYYYYTemplate($parts);
         } else {
             [$a, , $c] = $parts;
-            if (strlen($a) === 4) {
+            if (strlen($a) === 4 || intval($a) > 31) {
                 return $this->getPartsFromYYYYMMDDTemplate($parts);
-            } elseif (strlen($c) === 4) {
+            } elseif (strlen($c) === 4 || intval($c) > 31) {
                 return $this->getPartsFromDDMMYYYYTemplate($parts);
             } else {
                 // heuristic fallback

@@ -46,6 +46,7 @@ class DateNormalizerTest extends TestCase
             ['01--10/1990', '1990-10-01'], // Mixed separator format but still parsable
             ['1985-04-11', '1985-04-11'], // YYYY_MM_DD_TEMPLATE format
             ['1999.3.12', '1999-03-12'], // Heuristic fallback, no pattern matched
+            ['99-01-01', '1999-01-01'], // Heuristic fallback, no pattern matched
             ['01--02--00', '2000-02-01'], // Double separator
             ['12/1979', null], // Partial values
             ['Data: 12-03-1979!', '1979-03-12'], // Extra noise, still parsable
