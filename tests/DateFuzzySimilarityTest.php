@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Szopen\Similarity;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Szopen\Similarity\Configuration\DateDiffPenalty;
 use Szopen\Similarity\Configuration\DateFuzzySimilarityConfiguration;
@@ -12,6 +13,7 @@ use Szopen\Similarity\Configuration\DatePartsWeights;
 use Szopen\Similarity\DateFuzzySimilarity;
 use Szopen\Similarity\Normalizer\DateNormalizer;
 
+#[Group("similarity")]
 class DateFuzzySimilarityTest extends TestCase
 {
 
