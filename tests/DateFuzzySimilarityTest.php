@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Normalizer;
+namespace Tests\Szopen\Similarity;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
