@@ -7,9 +7,9 @@ namespace Szopen\Similarity\Configuration;
 readonly class DatePartsWeights
 {
     public function __construct(
-        private float $yearWeight = 0.5,
-        private float $monthWeight = 0.25,
-        private float $dayWeight = 0.25,
+        private float $yearWeight = 0.60,
+        private float $monthWeight = 0.20,
+        private float $dayWeight = 0.20,
     ) {
     }
 
