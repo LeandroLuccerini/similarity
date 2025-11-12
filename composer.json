@@ -1,6 +1,6 @@
 {
   "name": "szopen/similarity",
-  "description": "A similarity algorithm for user data matching",
+  "description": "A similarity library for string and date matching",
   "type": "library",
   "license": "MIT",
   "autoload": {
