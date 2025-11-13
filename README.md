@@ -23,7 +23,11 @@ Useful when dealing with typos, transliteration differences, or minor formatting
 - **Use case**: Matching names like `José` vs `Jose`, or `McDonald’s` vs `McDonalds`.
 
 ```php
-$similarity = new StringFuzzySimilarity($stringNormalizer);
+$similarity = new StringFuzzySimilarity(
+                new StringNormalizer(
+                  new TransliteratorFactory()
+                )
+              );
 $result = $similarity->similarity('José García', 'Jose Garcia'); // e.g., 0.97
 ```
 
@@ -59,11 +63,7 @@ Compares two strings for an **exact match** after normalization.
 - **Use case**: Validating IDs, codes, or fields that must match exactly.
 
 ```php
-$similarity = new StringExactSimilarity(
-                new StringNormalizer(
-                  new TransliteratorFactory()
-                )
-              );
+$similarity = new StringExactSimilarity();
 $result = $similarity->similarity('ABC123', 'abc123'); // 1.0
 ```
 
