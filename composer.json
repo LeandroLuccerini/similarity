@@ -17,7 +17,6 @@
   "minimum-stability": "stable",
   "require": {
     "php": ">=8.2",
-    "opis/json-schema": "^2.4",
     "ext-intl": "*",
     "ext-iconv": "*"
   },
@@ -25,5 +24,8 @@
     "phpunit/phpunit": "^12.3",
     "phpstan/phpstan": "^2.1",
     "friendsofphp/php-cs-fixer": "^3.88"
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit"
   }
 }
