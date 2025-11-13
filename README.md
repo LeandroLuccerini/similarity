@@ -38,7 +38,13 @@ Compares two date values even if they use different formats or delimiters.
 - **Use case**: Matching `12-03-1990` and `1990/03/12` as the same date.
 
 ```php
-$similarity = new DateFuzzySimilarity(new DateNormalizer());
+$similarity = new DateFuzzySimilarity(
+            new DateFuzzySimilarityConfiguration(
+                new DatePartsWeights(),
+                new DateDiffPenalty()
+            ),
+            new DateNormalizer()
+        );
 $result = $similarity->similarity('1990-03-12', '12/03/1990'); // 1.0
 ```
 
