@@ -39,12 +39,12 @@ Compares two date values even if they use different formats or delimiters.
 
 ```php
 $similarity = new DateFuzzySimilarity(
-            new DateFuzzySimilarityConfiguration(
-                new DatePartsWeights(),
-                new DateDiffPenalty()
-            ),
-            new DateNormalizer()
-        );
+                new DateFuzzySimilarityConfiguration(
+                  new DatePartsWeights(),
+                  new DateDiffPenalty()
+                ),
+                new DateNormalizer()
+              );
 $result = $similarity->similarity('1990-03-12', '12/03/1990'); // 1.0
 ```
 
@@ -59,7 +59,11 @@ Compares two strings for an **exact match** after normalization.
 - **Use case**: Validating IDs, codes, or fields that must match exactly.
 
 ```php
-$similarity = new StringExactSimilarity($stringNormalizer);
+$similarity = new StringExactSimilarity(
+                new StringNormalizer(
+                  new TransliteratorFactory()
+                )
+              );
 $result = $similarity->similarity('ABC123', 'abc123'); // 1.0
 ```
 
